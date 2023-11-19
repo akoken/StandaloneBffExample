@@ -7,6 +7,7 @@ using RecipeManagement.Services;
 using RecipeManagement.Resources;
 using RecipeManagement.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 public static class ServiceRegistration
 {
@@ -35,9 +36,15 @@ public static class ServiceRegistration
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = EnvironmentService.Authority;
-                    options.Audience = EnvironmentService.Audience;
+                    options.Authority = "https://localhost:5001";
+                    options.Audience = "recipe_management";
                     options.RequireHttpsMetadata = !env.IsDevelopment();
+                    options.TokenValidationParameters = new 
+TokenValidationParameters()
+                 {
+                     ValidateAudience = false
+                 };
+                    options.MapInboundClaims = false;
                 });
         }
 
