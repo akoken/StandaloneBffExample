@@ -23,9 +23,9 @@ builder.Services.AddAuthentication(options =>
     })
     .AddOpenIdConnect("oidc", options =>
     {
-        options.Authority = Environment.GetEnvironmentVariable("AUTH_AUTHORITY");
-        options.ClientId = Environment.GetEnvironmentVariable("AUTH_CLIENT_ID");
-        options.ClientSecret = Environment.GetEnvironmentVariable("AUTH_CLIENT_SECRET");
+        options.Authority = "https://localhost:5001";
+        options.ClientId = "bff";
+        options.ClientSecret = "secret";
         options.ResponseType = "code";
         options.ResponseMode = "query";
         options.UsePkce = true;
@@ -39,15 +39,17 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Clear();
         options.Scope.Add("openid");
         options.Scope.Add("profile");
+        //options.Scope.Add("offline_access");
+        options.Scope.Add("api1");
         
         // boundary scopes
         options.Scope.Add("recipe_management");
 
-        options.TokenValidationParameters = new()
-        {
-            NameClaimType = "name",
-            RoleClaimType = "role"
-        };
+        // options.TokenValidationParameters = new()
+        // {
+        //     NameClaimType = "name",
+        //     RoleClaimType = "role"
+        // };
     });
 
 var app = builder.Build();
@@ -76,6 +78,12 @@ app.MapControllers()
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRemoteBffApiEndpoint("/api", "https://localhost:5375/api")
+        .RequireAccessToken();
+    
+    endpoints.MapRemoteBffApiEndpoint("/api/recipes", "https://localhost:5375/api/recipes")
+        .RequireAccessToken();
+    
+    endpoints.MapRemoteBffApiEndpoint("/api/permissions", "https://localhost:5375/api/permissions")
         .RequireAccessToken();
 });
 
