@@ -42,7 +42,7 @@ public static class GetRecipeList
 
         public async Task<PagedList<RecipeDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            await _heimGuard.MustHavePermission<ForbiddenAccessException>(Permissions.CanReadRecipes);
+            // await _heimGuard.MustHavePermission<ForbiddenAccessException>(Permissions.CanReadRecipes);
 
             var collection = _recipeRepository.Query().AsNoTracking();
 

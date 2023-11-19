@@ -39,7 +39,7 @@ public static class AddRecipe
 
         public async Task<RecipeDto> Handle(Command request, CancellationToken cancellationToken)
         {
-            await _heimGuard.MustHavePermission<ForbiddenAccessException>(Permissions.CanAddRecipes);
+            // await _heimGuard.MustHavePermission<ForbiddenAccessException>(Permissions.CanAddRecipes);
 
             var recipe = Recipe.Create(request.RecipeToAdd);
             await _recipeRepository.Add(recipe, cancellationToken);

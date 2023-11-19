@@ -35,7 +35,7 @@ public static class GetRecipe
 
         public async Task<RecipeDto> Handle(Query request, CancellationToken cancellationToken)
         {
-            await _heimGuard.MustHavePermission<ForbiddenAccessException>(Permissions.CanReadRecipes);
+            //await _heimGuard.MustHavePermission<ForbiddenAccessException>(Permissions.CanReadRecipes);
 
             var result = await _recipeRepository.GetById(request.Id, cancellationToken: cancellationToken);
             return _mapper.Map<RecipeDto>(result);
